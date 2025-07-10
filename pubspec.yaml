@@ -1,0 +1,67 @@
+name: savage_streak
+description: A Flutter habit tracking app with AI-generated motivational content and roasts.
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: ">=3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # State Management
+  flutter_riverpod: ^2.4.9
+  
+  # Database
+  sqflite: ^2.3.0
+  path: ^1.8.3
+  sqflite_common_ffi_web: ^0.4.3+1
+  
+  # HTTP & API
+  http: ^1.1.0
+  supabase_flutter: ^2.8.0
+  
+  # Notifications
+  flutter_local_notifications: ^16.3.0
+  workmanager: ^0.5.1
+  timezone: ^0.9.2
+  
+  # Storage
+  shared_preferences: ^2.2.2
+  
+  # UI & Styling
+  google_fonts: ^6.1.0
+  
+  # Date & Time
+  intl: ^0.19.0
+  
+  # Animations
+  rive: ^0.12.4
+  
+  # Platform-specific
+  cupertino_icons: ^1.0.6
+  
+  # Responsive Text Sizing
+  auto_size_text: ^3.0.0
+  
+  # URL Launcher
+  url_launcher: ^6.2.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+  
+  # Assets
+  assets:
+    - assets/images/
+    - assets/icons/
+    - assets/animations/
+    - assets/sounds/ 
