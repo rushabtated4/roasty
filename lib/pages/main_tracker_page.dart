@@ -349,6 +349,7 @@ class _MainTrackerPageState extends ConsumerState<MainTrackerPage> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    const SizedBox(height: 20),
                     EmojiCalendar(
                       entries: entries,
                       onMonthChanged: (month) async {

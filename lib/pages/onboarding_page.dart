@@ -90,13 +90,16 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
 
     if (habitTitle.isEmpty || reason.isEmpty) return;
 
+    // Create step notifier for progressive loading
+    final stepNotifier = ValueNotifier<int>(0);
+
     // Show loading dialog
     showGeneralDialog(
       context: context,
       barrierDismissible: false,
       barrierColor: Colors.black,
       transitionDuration: const Duration(milliseconds: 200),
-      pageBuilder: (context, animation, secondaryAnimation) => const RoastLoadingDialog(),
+      pageBuilder: (context, animation, secondaryAnimation) => RoastLoadingDialog(stepNotifier: stepNotifier),
     );
 
     try {
@@ -116,6 +119,10 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
       );
 
       final habitId = await DatabaseService().insertHabit(habit);
+      
+      // Step 1: Move to roast generation
+      stepNotifier.value = 1;
+      await Future.delayed(const Duration(milliseconds: 500)); // Small delay for UX
 
       // Set notification preferences
       await NotificationService().setNotificationsEnabled(_notificationsEnabled);
@@ -131,6 +138,10 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
         escalationState: 0,
         count: 7,
       );
+      
+      // Step 2: Move to notifications setup
+      stepNotifier.value = 2;
+      await Future.delayed(const Duration(milliseconds: 500));
 
       // Create entries for the next 7 days
       final now = DateTime.now();
@@ -159,11 +170,16 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
           todayRoast.missed,
         );
       }
+      
+      // Step 3: Final step
+      stepNotifier.value = 3;
+      await Future.delayed(const Duration(milliseconds: 800)); // Longer delay for final step
 
       if (mounted) {
         if (Navigator.canPop(context)) {
           Navigator.of(context).pop(); // Close loading dialog
         }
+        stepNotifier.dispose(); // Clean up notifier
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (mounted) {
             Navigator.of(context).pushAndRemoveUntil(
@@ -178,6 +194,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
         if (Navigator.canPop(context)) {
           Navigator.of(context).pop(); // Close loading dialog
         }
+        stepNotifier.dispose(); // Clean up notifier
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -302,19 +319,21 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
         children: [
           const SizedBox(height: 40),
           
-          // Welcome image/illustration placeholder
+          // Welcome app icon
           Container(
             width: 200,
             height: 200,
             decoration: BoxDecoration(
-              color: const Color(0xFF111111),
               borderRadius: BorderRadius.circular(100),
-              border: Border.all(color: const Color(0xFF222222), width: 2),
             ),
-            child: const Icon(
-              Icons.flash_on,
-              size: 100,
-              color: Color(0xFF00D07E),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(100),
+              child: Image.asset(
+                'assets/icons/Icon-512.png',
+                width: 200,
+                height: 200,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
           
@@ -404,8 +423,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                 
                 return GestureDetector(
                   onTap: () => setState(() => _selectedHabit = habit['value']!),
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 200),
+                  child: Container(
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                       color: isSelected
@@ -452,8 +470,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
         setState(() => _selectedHabit = 'other');
         _showCustomHabitDialog();
       },
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
+      child: Container(
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           color: isSelected
