@@ -1,12 +1,12 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:superwallkit_flutter/superwallkit_flutter.dart';
 import '../models/habit_model.dart';
 import '../services/database_service.dart';
 import '../services/supabase_service.dart';
 import '../services/notification_service.dart';
 import '../widgets/emoji_calendar.dart';
-import '../widgets/roast_loading_dialog.dart';
-import '../widgets/superwall_paywall.dart';
 import 'settings_page.dart';
 import 'onboarding_page.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -66,12 +66,38 @@ class MainTrackerPage extends ConsumerStatefulWidget {
 class _MainTrackerPageState extends ConsumerState<MainTrackerPage> {
   EntryModel? _todayEntry;
   DateTime _currentMonth = DateTime.now();
-  String? _lastAction; // Track last action: 'done' or 'missed'
+  bool _isPaidUser = false;
+  StreamSubscription? _subscriptionStatusSubscription;
 
   @override
   void initState() {
     super.initState();
     _loadData();
+    _setupSuperwallSubscription();
+  }
+  
+  void _setupSuperwallSubscription() {
+    // Only set up Superwall if not on web
+    if (!kIsWeb) {
+      try {
+        _subscriptionStatusSubscription = Superwall.shared.subscriptionStatus.listen((status) {
+          if (mounted) {
+            setState(() {
+              // Check if status is SubscriptionStatusActive
+              _isPaidUser = status is SubscriptionStatusActive;
+            });
+          }
+        });
+      } catch (e) {
+        debugPrint('Failed to setup Superwall subscription listener: $e');
+      }
+    }
+  }
+  
+  @override
+  void dispose() {
+    _subscriptionStatusSubscription?.cancel();
+    super.dispose();
   }
 
   Future<void> _loadData() async {
@@ -145,11 +171,16 @@ class _MainTrackerPageState extends ConsumerState<MainTrackerPage> {
 
     // Schedule notifications with today's messages
     if (habit.reminderTime != null) {
-      await NotificationService().scheduleHabitReminders(
-        habit,
-        newEntry.roastScreen,
-        newEntry.roastMissed,
-      );
+      try {
+        await NotificationService().scheduleHabitReminders(
+          habit,
+          newEntry.roastScreen,
+          newEntry.roastMissed,
+        );
+      } catch (e) {
+        debugPrint('[ERROR] Failed to schedule notifications in _createTodayEntry: $e');
+        // Continue without showing error to user as this is not critical for app functionality
+      }
     }
   }
 
@@ -167,7 +198,6 @@ class _MainTrackerPageState extends ConsumerState<MainTrackerPage> {
     // Update local state
     setState(() {
       _todayEntry = _todayEntry!.copyWith(status: status);
-      _lastAction = status;
     });
 
     // Update habit streak
@@ -247,14 +277,6 @@ class _MainTrackerPageState extends ConsumerState<MainTrackerPage> {
     }
   }
 
-  void _showSchedulePaywall() {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) => const SuperwallPaywall(),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -403,12 +425,48 @@ class _MainTrackerPageState extends ConsumerState<MainTrackerPage> {
     );
   }
 
+  void _onMarkDonePressed() {
+    if (!kIsWeb && !_isPaidUser) {
+      // User is not paid, show Superwall paywall
+      try {
+        Superwall.shared.registerPlacement('mark_done_feature', feature: () {
+          _markHabitStatus('done');
+        });
+      } catch (e) {
+        debugPrint('Failed to show Superwall for mark done: $e');
+        // Fallback to direct action if Superwall fails
+        _markHabitStatus('done');
+      }
+    } else {
+      // User is paid or on web, proceed directly
+      _markHabitStatus('done');
+    }
+  }
+  
+  void _onMarkMissedPressed() {
+    if (!kIsWeb && !_isPaidUser) {
+      // User is not paid, show Superwall paywall
+      try {
+        Superwall.shared.registerPlacement('mark_missed_feature', feature: () {
+          _markHabitStatus('missed');
+        });
+      } catch (e) {
+        debugPrint('Failed to show Superwall for mark missed: $e');
+        // Fallback to direct action if Superwall fails
+        _markHabitStatus('missed');
+      }
+    } else {
+      // User is paid or on web, proceed directly
+      _markHabitStatus('missed');
+    }
+  }
+
   Widget _buildActionButtons() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         ElevatedButton(
-          onPressed: () => _markHabitStatus('done'),
+          onPressed: () => _onMarkDonePressed(),
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.white,
             foregroundColor: Colors.black,
@@ -429,7 +487,7 @@ class _MainTrackerPageState extends ConsumerState<MainTrackerPage> {
         Center(
           child: InkWell(
             borderRadius: BorderRadius.circular(8),
-            onTap: () => _markHabitStatus('missed'),
+            onTap: () => _onMarkMissedPressed(),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               child: Text(

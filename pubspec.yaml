@@ -50,6 +50,9 @@ dependencies:
   
   # URL Launcher
   url_launcher: ^6.2.6
+  
+  # Superwall SDK
+  superwallkit_flutter: ^2.3.5
 
 dev_dependencies:
   flutter_test:

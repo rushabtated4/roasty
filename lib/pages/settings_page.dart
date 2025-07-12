@@ -94,11 +94,24 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
             }
           }
         }
-        await NotificationService().scheduleHabitReminders(
-          updatedHabit,
-          roastText,
-          missedText,
-        );
+        try {
+          await NotificationService().scheduleHabitReminders(
+            updatedHabit,
+            roastText,
+            missedText,
+          );
+        } catch (e) {
+          debugPrint('[ERROR] Failed to schedule notifications in _showTimePicker: $e');
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('❌ Failed to schedule notifications: $e'),
+                duration: const Duration(seconds: 5),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
+        }
       }
     }
   }
@@ -190,26 +203,6 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     ) ?? false;
   }
 
-  Future<void> _testAlarm() async {
-    final notificationService = NotificationService();
-    
-    // Schedule an alarm for 10 seconds from now
-    final now = DateTime.now();
-    final testTime = now.add(const Duration(seconds: 10));
-    
-    await notificationService.scheduleHabitReminders(
-      _currentHabit!,
-      'Test Alarm',
-      'This is a test alarm! Did it break through?',
-    );
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Test alarm scheduled for 10 seconds from now'),
-        duration: Duration(seconds: 3),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -224,14 +217,6 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          ListTile(
-            title: const Text('Test Alarm'),
-            subtitle: const Text('Triggers a test alarm in 10 seconds'),
-            trailing: ElevatedButton(
-              onPressed: _testAlarm,
-              child: const Text('Test'),
-            ),
-          ),
           // Reminders Section
           _buildSectionHeader('Reminders'),
           _buildSettingsTile(

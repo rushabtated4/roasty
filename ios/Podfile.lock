@@ -15,6 +15,12 @@ PODS:
   - sqflite_darwin (0.0.4):
     - Flutter
     - FlutterMacOS
+  - Superscript (0.2.8)
+  - SuperwallKit (4.5.2):
+    - Superscript (= 0.2.8)
+  - superwallkit_flutter (0.0.1):
+    - Flutter
+    - SuperwallKit (= 4.5.2)
   - url_launcher_ios (0.0.1):
     - Flutter
   - workmanager (0.0.1):
@@ -28,8 +34,14 @@ DEPENDENCIES:
   - rive_common (from `.symlinks/plugins/rive_common/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
   - sqflite_darwin (from `.symlinks/plugins/sqflite_darwin/darwin`)
+  - superwallkit_flutter (from `.symlinks/plugins/superwallkit_flutter/ios`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
   - workmanager (from `.symlinks/plugins/workmanager/ios`)
+
+SPEC REPOS:
+  trunk:
+    - Superscript
+    - SuperwallKit
 
 EXTERNAL SOURCES:
   app_links:
@@ -46,6 +58,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
   sqflite_darwin:
     :path: ".symlinks/plugins/sqflite_darwin/darwin"
+  superwallkit_flutter:
+    :path: ".symlinks/plugins/superwallkit_flutter/ios"
   url_launcher_ios:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
   workmanager:
@@ -59,9 +73,12 @@ SPEC CHECKSUMS:
   rive_common: daeaa675f575d0a2ce65a2c90d4838d75327047b
   shared_preferences_foundation: 9e1978ff2562383bd5676f64ec4e9aa8fa06a6f7
   sqflite_darwin: 20b2a3a3b70e43edae938624ce550a3cbf66a3d0
+  Superscript: 82dbb40f502823160e75503ebc1b6bac756a503d
+  SuperwallKit: 520fd9dff39358c9708d88cc69c1f4fbd32b3008
+  superwallkit_flutter: 24189eddf53053b67bb8a909556fca71140665c4
   url_launcher_ios: 694010445543906933d732453a59da0a173ae33d
   workmanager: 01be2de7f184bd15de93a1812936a2b7f42ef07e
 
-PODFILE CHECKSUM: 819463e6a0290f5a72f145ba7cde16e8b6ef0796
+PODFILE CHECKSUM: 1959d098c91d8a792531a723c4a9d7e9f6a01e38
 
 COCOAPODS: 1.16.2

@@ -1,8 +1,10 @@
+import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart';
+import 'package:superwallkit_flutter/superwallkit_flutter.dart';
 import 'theme.dart';
 import 'services/database_service.dart';
 import 'services/notification_service.dart';
@@ -28,6 +30,20 @@ void main() async {
     await SupabaseService.initialize();
   } catch (e) {
     debugPrint('Failed to initialize Supabase service: $e');
+  }
+  
+  // Initialize Superwall
+  if (!kIsWeb) {
+    try {
+      // TODO: Replace with your actual API keys
+      String apiKey = Platform.isIOS 
+          ? "pk_dc7c5317be4ca9aba0e178d589a4de4908c95d91b13f002d" // iOS API key
+          : "pk_a211f2b34866ec62c468edc421c1342dda68acc90e07c496"; // Android API key
+      Superwall.configure(apiKey);
+      debugPrint('Superwall configured successfully');
+    } catch (e) {
+      debugPrint('Failed to initialize Superwall: $e');
+    }
   }
   
   runApp(const ProviderScope(child: SavageStreakApp()));
