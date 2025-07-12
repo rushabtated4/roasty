@@ -55,7 +55,7 @@ class SavageStreakApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Savage Streak',
+      title: 'Roasty',
       theme: lightTheme,
       darkTheme: darkTheme,
       themeMode: ThemeMode.dark,
@@ -72,28 +72,91 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends State<SplashScreen>
+    with TickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _fadeAnimation;
+  late Animation<double> _scaleAnimation;
+  late Animation<Offset> _slideAnimation;
+
   @override
   void initState() {
     super.initState();
+    _setupAnimations();
     _checkForExistingHabit();
   }
 
+  void _setupAnimations() {
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 1500),
+      vsync: this,
+    );
+
+    _fadeAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: const Interval(0.0, 0.6, curve: Curves.easeOut),
+    ));
+
+    _scaleAnimation = Tween<double>(
+      begin: 0.5,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: const Interval(0.0, 0.8, curve: Curves.elasticOut),
+    ));
+
+    _slideAnimation = Tween<Offset>(
+      begin: const Offset(0, 0.3),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: const Interval(0.3, 1.0, curve: Curves.easeOut),
+    ));
+
+    _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
   Future<void> _checkForExistingHabit() async {
-    // Small delay for splash effect
-    await Future.delayed(const Duration(milliseconds: 1000));
+    // Allow animation to play for at least 1.5 seconds
+    await Future.delayed(const Duration(milliseconds: 1500));
     
     final habit = await DatabaseService().getCurrentHabit();
     
     if (mounted) {
-      if (habit != null) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const MainTrackerPage()),
-        );
-      } else {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const OnboardingPage()),
-        );
+      // Fade out before navigation
+      await _animationController.reverse();
+      
+      if (mounted) {
+        if (habit != null) {
+          Navigator.of(context).pushReplacement(
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) => const MainTrackerPage(),
+              transitionDuration: const Duration(milliseconds: 300),
+              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                return FadeTransition(opacity: animation, child: child);
+              },
+            ),
+          );
+        } else {
+          Navigator.of(context).pushReplacement(
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) => const OnboardingPage(),
+              transitionDuration: const Duration(milliseconds: 300),
+              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                return FadeTransition(opacity: animation, child: child);
+              },
+            ),
+          );
+        }
       }
     }
   }
@@ -101,35 +164,64 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              '🔥',
-              style: TextStyle(fontSize: 80),
+      body: AnimatedBuilder(
+        animation: _animationController,
+        builder: (context, child) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                FadeTransition(
+                  opacity: _fadeAnimation,
+                  child: ScaleTransition(
+                    scale: _scaleAnimation,
+                    child: const Text(
+                      '🔥',
+                      style: TextStyle(fontSize: 100),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 32),
+                SlideTransition(
+                  position: _slideAnimation,
+                  child: FadeTransition(
+                    opacity: _fadeAnimation,
+                    child: Text(
+                      'Roasty',
+                      style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                        color: const Color(0xFF00D07E),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 42,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                SlideTransition(
+                  position: _slideAnimation,
+                  child: FadeTransition(
+                    opacity: _fadeAnimation,
+                    child: Text(
+                      'One habit. No excuses.',
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        color: const Color(0xFF9E9E9E),
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 64),
+                FadeTransition(
+                  opacity: _fadeAnimation,
+                  child: const CircularProgressIndicator(
+                    color: Color(0xFF00D07E),
+                    strokeWidth: 3,
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 24),
-            Text(
-              'Savage Streak',
-              style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                color: const Color(0xFF00D07E),
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 12),
-            Text(
-              'One habit. No excuses.',
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: const Color(0xFF9E9E9E),
-              ),
-            ),
-            const SizedBox(height: 48),
-            const CircularProgressIndicator(
-              color: Color(0xFF00D07E),
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }

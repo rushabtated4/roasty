@@ -10,10 +10,10 @@ import 'package:timezone/data/latest.dart' as tz;
 class NotificationService {
   static final NotificationService _instance = NotificationService._internal();
   static final FlutterLocalNotificationsPlugin _notifications = FlutterLocalNotificationsPlugin();
-  static const String alarmChannelId = 'savage_streak_alarms';
-  static const String alarmChannelName = 'Habit Alarms';
-  static const String reminderChannelId = 'savage_streak_reminders';
-  static const String reminderChannelName = 'Habit Reminders';
+  static const String alarmChannelId = 'roasty_alarms';
+  static const String alarmChannelName = 'Roasty Alarms';
+  static const String reminderChannelId = 'roasty_reminders';
+  static const String reminderChannelName = 'Roasty Reminders';
   bool _isTimeZoneInitialized = false;
 
   NotificationService._internal();
@@ -213,7 +213,7 @@ class NotificationService {
       
       await _scheduleRecurringNotification(
         id: 1,
-        title: 'Savage Streak',
+        title: 'Roasty',
         body: roastText,
         scheduledTime: scheduledTime,
         useAlarmChannel: true,

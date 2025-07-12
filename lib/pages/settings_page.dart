@@ -366,7 +366,7 @@ For questions, contact support.''',
             child: Column(
               children: [
                 Text(
-                  'Savage Streak',
+                  'Roasty',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: const Color(0xFF00D07E),
                     fontWeight: FontWeight.bold,
