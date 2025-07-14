@@ -89,7 +89,6 @@ class _MainTrackerPageState extends ConsumerState<MainTrackerPage> {
           }
         });
       } catch (e) {
-        debugPrint('Failed to setup Superwall subscription listener: $e');
       }
     }
   }
@@ -120,13 +119,9 @@ class _MainTrackerPageState extends ConsumerState<MainTrackerPage> {
     
     // Load today's entry
     final todayEntry = await DatabaseService().getTodayEntry(habit.id!);
-    debugPrint('[DEBUG] _loadData: todayEntry = '
-      '${todayEntry != null ? todayEntry.entryDate.toIso8601String() : 'null'}, '
-      'status = ${todayEntry != null ? todayEntry.status : 'null'}');
 
     // If today's entry is 'future', update it to 'pending'
     if (todayEntry != null && todayEntry.status == 'future') {
-      debugPrint('[DEBUG] _loadData: Fixing status from future to pending for today\'s entry');
       await DatabaseService().updateEntryStatus(todayEntry.id!, 'pending');
       final fixedEntry = todayEntry.copyWith(status: 'pending');
       setState(() => _todayEntry = fixedEntry);
@@ -139,7 +134,6 @@ class _MainTrackerPageState extends ConsumerState<MainTrackerPage> {
     
     // Create today's entry if it doesn't exist
     if (todayEntry == null) {
-      debugPrint('[DEBUG] _loadData: Creating new entry for today');
       await _createTodayEntry(habit);
     }
   }
@@ -161,8 +155,6 @@ class _MainTrackerPageState extends ConsumerState<MainTrackerPage> {
     );
 
     final entryId = await DatabaseService().insertEntry(entry);
-    debugPrint('[DEBUG] _createTodayEntry: Created entry for today with id = $entryId, date = '
-      '${entry.entryDate.toIso8601String()}, status = pending');
     
     final newEntry = entry.copyWith(id: entryId);
     setState(() {
@@ -178,7 +170,6 @@ class _MainTrackerPageState extends ConsumerState<MainTrackerPage> {
           newEntry.roastMissed,
         );
       } catch (e) {
-        debugPrint('[ERROR] Failed to schedule notifications in _createTodayEntry: $e');
         // Continue without showing error to user as this is not critical for app functionality
       }
     }
@@ -223,7 +214,7 @@ class _MainTrackerPageState extends ConsumerState<MainTrackerPage> {
         SnackBar(
           content: Text(status == 'done' ? 'Habit completed! 🔥' : 'Marked as missed'),
           backgroundColor: status == 'done' 
-              ? const Color(0xFF00D07E) 
+              ? const Color(0xFF8A2BE2) 
               : const Color(0xFFFF3B30),
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -285,7 +276,7 @@ class _MainTrackerPageState extends ConsumerState<MainTrackerPage> {
 
     if (habit == null) {
       return const Scaffold(
-        body: Center(child: CircularProgressIndicator(color: Color(0xFF00D07E))),
+        body: Center(child: CircularProgressIndicator(color: Color(0xFF8A2BE2))),
       );
     }
 
@@ -343,7 +334,7 @@ class _MainTrackerPageState extends ConsumerState<MainTrackerPage> {
                           style: GoogleFonts.fredoka(
                             fontSize: 54,
                             color: _todayEntry!.status == 'done'
-                                ? const Color(0xFF00D07E)
+                                ? const Color(0xFF8A2BE2)
                                 : const Color(0xFFFF3B30),
                             height: 1.3,
                             fontWeight: FontWeight.w700,
@@ -408,7 +399,7 @@ class _MainTrackerPageState extends ConsumerState<MainTrackerPage> {
         Text(
           '${habit.currentStreak}',
           style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-            color: const Color(0xFF00D07E),
+            color: const Color(0xFF8A2BE2),
             fontWeight: FontWeight.w900,
             fontSize: 48,
           ),
@@ -433,7 +424,6 @@ class _MainTrackerPageState extends ConsumerState<MainTrackerPage> {
           _markHabitStatus('done');
         });
       } catch (e) {
-        debugPrint('Failed to show Superwall for mark done: $e');
         // Fallback to direct action if Superwall fails
         _markHabitStatus('done');
       }
@@ -451,7 +441,6 @@ class _MainTrackerPageState extends ConsumerState<MainTrackerPage> {
           _markHabitStatus('missed');
         });
       } catch (e) {
-        debugPrint('Failed to show Superwall for mark missed: $e');
         // Fallback to direct action if Superwall fails
         _markHabitStatus('missed');
       }

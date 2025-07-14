@@ -39,9 +39,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
           hour: int.parse(parts[0]),
           minute: int.parse(parts[1]),
         );
-        print('[DEBUG] Loaded reminderTime from DB: \'${habit.reminderTime}\'');
       } else {
-        print('[DEBUG] No reminderTime found in DB, using TimeOfDay.now()');
       }
     });
   }
@@ -57,7 +55,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               backgroundColor: const Color(0xFF111111),
               hourMinuteTextColor: Colors.white,
               dayPeriodTextColor: Colors.white,
-              dialHandColor: const Color(0xFF00D07E),
+              dialHandColor: const Color(0xFF8A2BE2),
               dialTextColor: Colors.white,
               dialBackgroundColor: const Color(0xFF222222),
             ),
@@ -70,7 +68,6 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     if (time != null && _currentHabit != null) {
       final timeString = '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
       final updatedHabit = _currentHabit!.copyWith(reminderTime: timeString);
-      print('[DEBUG] Saving reminderTime to DB: $timeString');
       await DatabaseService().updateHabit(updatedHabit);
       
       setState(() {
@@ -101,7 +98,6 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
             missedText,
           );
         } catch (e) {
-          debugPrint('[ERROR] Failed to schedule notifications in _showTimePicker: $e');
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -368,7 +364,7 @@ For questions, contact support.''',
                 Text(
                   'Roasty',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: const Color(0xFF00D07E),
+                    color: const Color(0xFF8A2BE2),
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -393,7 +389,7 @@ For questions, contact support.''',
       child: Text(
         title,
         style: Theme.of(context).textTheme.titleSmall?.copyWith(
-          color: const Color(0xFF00D07E),
+          color: const Color(0xFF8A2BE2),
           fontWeight: FontWeight.w600,
         ),
       ),
@@ -418,12 +414,12 @@ For questions, contact support.''',
         leading: Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: const Color(0xFF00D07E).withOpacity(0.1),
+            color: const Color(0xFF8A2BE2).withOpacity(0.1),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Icon(
             icon,
-            color: const Color(0xFF00D07E),
+            color: const Color(0xFF8A2BE2),
             size: 20,
           ),
         ),
@@ -463,12 +459,12 @@ For questions, contact support.''',
         leading: Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: const Color(0xFF00D07E).withOpacity(0.1),
+            color: const Color(0xFF8A2BE2).withOpacity(0.1),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Icon(
             icon,
-            color: const Color(0xFF00D07E),
+            color: const Color(0xFF8A2BE2),
             size: 20,
           ),
         ),
@@ -487,7 +483,7 @@ For questions, contact support.''',
         trailing: Switch(
           value: value,
           onChanged: onChanged,
-          activeColor: const Color(0xFF00D07E),
+          activeColor: const Color(0xFF8A2BE2),
           inactiveThumbColor: const Color(0xFF666666),
           inactiveTrackColor: const Color(0xFF333333),
         ),
@@ -659,7 +655,7 @@ For questions, contact support.''',
     child: Text(
       text,
       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-        color: const Color(0xFF00D07E),
+        color: const Color(0xFF8A2BE2),
         fontWeight: FontWeight.bold,
       ),
     ),

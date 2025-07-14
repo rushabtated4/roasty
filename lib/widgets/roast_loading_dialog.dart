@@ -138,8 +138,8 @@ class _RoastLoadingDialogState extends State<RoastLoadingDialog>
           decoration: BoxDecoration(
             gradient: RadialGradient(
               colors: [
-                const Color(0xFF00D07E).withOpacity(0.4 + 0.2 * _pulseController.value),
-                const Color(0xFF00D07E).withOpacity(0.2),
+                const Color(0xFF8A2BE2).withOpacity(0.4 + 0.2 * _pulseController.value),
+                const Color(0xFF8A2BE2).withOpacity(0.2),
                 const Color(0xFFFF3B30).withOpacity(0.1),
                 Colors.transparent,
               ],
@@ -159,7 +159,7 @@ class _RoastLoadingDialogState extends State<RoastLoadingDialog>
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       border: Border.all(
-                        color: const Color(0xFF00D07E).withOpacity(0.3),
+                        color: const Color(0xFF8A2BE2).withOpacity(0.3),
                         width: 2,
                       ),
                     ),
@@ -171,7 +171,7 @@ class _RoastLoadingDialogState extends State<RoastLoadingDialog>
                   child: const Icon(
                     Icons.whatshot,
                     size: 50,
-                    color: Color(0xFF00D07E),
+                    color: Color(0xFF8A2BE2),
                   ),
                 ),
                 // Rotating sparkles
@@ -192,7 +192,7 @@ class _RoastLoadingDialogState extends State<RoastLoadingDialog>
                         child: Icon(
                           Icons.auto_awesome,
                           size: 12,
-                          color: const Color(0xFF00D07E).withOpacity(0.6),
+                          color: const Color(0xFF8A2BE2).withOpacity(0.6),
                         ),
                       ),
                     ],
@@ -223,7 +223,7 @@ class _RoastLoadingDialogState extends State<RoastLoadingDialog>
               height: 8,
               decoration: BoxDecoration(
                 color: isActive 
-                    ? const Color(0xFF00D07E)
+                    ? const Color(0xFF8A2BE2)
                     : const Color(0xFF333333),
                 borderRadius: BorderRadius.circular(4),
               ),

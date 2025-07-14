@@ -23,26 +23,21 @@ void main() async {
   try {
     await NotificationService().initialize();
   } catch (e) {
-    debugPrint('Failed to initialize notification service: $e');
   }
   
   try {
     await SupabaseService.initialize();
   } catch (e) {
-    debugPrint('Failed to initialize Supabase service: $e');
   }
   
   // Initialize Superwall
   if (!kIsWeb) {
     try {
-      // TODO: Replace with your actual API keys
       String apiKey = Platform.isIOS 
           ? "pk_dc7c5317be4ca9aba0e178d589a4de4908c95d91b13f002d" // iOS API key
           : "pk_a211f2b34866ec62c468edc421c1342dda68acc90e07c496"; // Android API key
       Superwall.configure(apiKey);
-      debugPrint('Superwall configured successfully');
     } catch (e) {
-      debugPrint('Failed to initialize Superwall: $e');
     }
   }
   
@@ -189,7 +184,7 @@ class _SplashScreenState extends State<SplashScreen>
                     child: Text(
                       'Roasty',
                       style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                        color: const Color(0xFF00D07E),
+                        color: const Color(0xFF8A2BE2),
                         fontWeight: FontWeight.bold,
                         fontSize: 42,
                       ),
@@ -214,7 +209,7 @@ class _SplashScreenState extends State<SplashScreen>
                 FadeTransition(
                   opacity: _fadeAnimation,
                   child: const CircularProgressIndicator(
-                    color: Color(0xFF00D07E),
+                    color: Color(0xFF8A2BE2),
                     strokeWidth: 3,
                   ),
                 ),

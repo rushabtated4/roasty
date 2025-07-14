@@ -35,7 +35,7 @@ class SuperwallPaywall extends StatelessWidget {
               Text(
                 'Go Pro',
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  color: const Color(0xFF00D07E),
+                  color: const Color(0xFF8A2BE2),
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -86,16 +86,16 @@ class SuperwallPaywall extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: const Color(0xFF00D07E).withOpacity(0.1),
+              color: const Color(0xFF8A2BE2).withOpacity(0.1),
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: const Color(0xFF00D07E), width: 1),
+              border: Border.all(color: const Color(0xFF8A2BE2), width: 1),
             ),
             child: Column(
               children: [
                 Text(
                   '\$4.99/month',
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    color: const Color(0xFF00D07E),
+                    color: const Color(0xFF8A2BE2),
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -116,12 +116,9 @@ class SuperwallPaywall extends StatelessWidget {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () {
-                // TODO: Implement actual Superwall integration
-                _showComingSoonDialog(context);
-              },
+              onPressed: () => Navigator.pop(context),
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF00D07E),
+                backgroundColor: const Color(0xFF8A2BE2),
                 foregroundColor: Colors.black,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
@@ -175,12 +172,12 @@ class SuperwallPaywall extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: const Color(0xFF00D07E).withOpacity(0.1),
+            color: const Color(0xFF8A2BE2).withOpacity(0.1),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Icon(
             icon,
-            color: const Color(0xFF00D07E),
+            color: const Color(0xFF8A2BE2),
             size: 20,
           ),
         ),
@@ -209,25 +206,4 @@ class SuperwallPaywall extends StatelessWidget {
     );
   }
 
-  void _showComingSoonDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF111111),
-        title: const Text('Coming Soon!'),
-        content: const Text(
-          'Pro features are coming soon. For now, enjoy the full Savage Streak experience for free!',
-        ),
-        actions: [
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context); // Close dialog
-              Navigator.pop(context); // Close paywall
-            },
-            child: const Text('Got it!'),
-          ),
-        ],
-      ),
-    );
-  }
 }

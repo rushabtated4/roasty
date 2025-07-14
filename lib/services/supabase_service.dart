@@ -30,15 +30,6 @@ class SupabaseService {
     required int escalationState,
     int count = 7,
   }) async {
-    print('🚀 === SupabaseService.generateRoasts called ===');
-    print('📝 Request parameters:');
-    print('  - habit: $habit');
-    print('  - reason: $reason');
-    print('  - tone: $tone');
-    print('  - streak: $streak');
-    print('  - consecutiveMisses: $consecutiveMisses');
-    print('  - escalationState: $escalationState');
-    print('  - count: $count');
 
     try {
       final requestBody = {
@@ -51,37 +42,23 @@ class SupabaseService {
         'count': count,
       };
 
-      print('📤 Calling Supabase Edge Function with body:');
-      print('  ${requestBody.toString()}');
 
       final response = await client.functions.invoke(
         'generate-roasts',
         body: requestBody,
       );
 
-      print('📡 Supabase response received:');
-      print('  - status: ${response.status}');
-      print('  - data: ${response.data}');
 
       if (response.data != null && response.data['roasts'] != null) {
         final roastsList = response.data['roasts'] as List<dynamic>;
-        print('✅ Successfully parsed ${roastsList.length} roasts');
-        
         final result = roastsList
             .map((roast) => RoastTriple.fromJson(roast))
             .toList();
-            
-        print('✅ Converted to RoastTriple objects: ${result.length}');
         return result;
       } else {
-        print('❌ Invalid response format - no roasts in data');
-        print('❌ Response data: ${response.data}');
         throw Exception('Invalid response format');
       }
     } catch (e) {
-      print('❌ SupabaseService error: $e');
-      print('❌ Error type: ${e.runtimeType}');
-      print('🔄 Falling back to dummy roasts');
       
       // Return dummy roasts on any error
       return _generateDummyRoasts(tone, count);

@@ -5,8 +5,8 @@ ThemeData get lightTheme => ThemeData(
       useMaterial3: true,
       scaffoldBackgroundColor: const Color(0xFF000000),
       colorScheme: ColorScheme.dark(
-        primary: const Color(0xFF00D07E),
-        secondary: const Color(0xFF00D07E),
+        primary: const Color(0xFF8A2BE2),
+        secondary: const Color(0xFF8A2BE2),
         tertiary: const Color(0xFFFF3B30),
         surface: const Color(0xFF000000),
         error: const Color(0xFFFF3B30),
@@ -33,7 +33,7 @@ ThemeData get lightTheme => ThemeData(
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF00D07E),
+          backgroundColor: const Color(0xFF8A2BE2),
           foregroundColor: const Color(0xFF000000),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(32),
@@ -134,8 +134,8 @@ ThemeData get darkTheme => ThemeData(
       useMaterial3: true,
       scaffoldBackgroundColor: const Color(0xFF000000),
       colorScheme: ColorScheme.dark(
-        primary: const Color(0xFF00D07E),
-        secondary: const Color(0xFF00D07E),
+        primary: const Color(0xFF8A2BE2),
+        secondary: const Color(0xFF8A2BE2),
         tertiary: const Color(0xFFFF3B30),
         surface: const Color(0xFF000000),
         error: const Color(0xFFFF3B30),
@@ -162,7 +162,7 @@ ThemeData get darkTheme => ThemeData(
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF00D07E),
+          backgroundColor: const Color(0xFF8A2BE2),
           foregroundColor: const Color(0xFF000000),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(32),

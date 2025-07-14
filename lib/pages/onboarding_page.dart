@@ -369,7 +369,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
             child: ElevatedButton(
               onPressed: _nextStep,
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF00D07E),
+                backgroundColor: const Color(0xFF8A2BE2),
                 foregroundColor: Colors.white,
                 minimumSize: const Size.fromHeight(56),
                 textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
@@ -764,7 +764,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
               onChanged: (val) => setState(() => _notificationsEnabled = val),
               title: const Text('Enable Notifications', style: TextStyle(color: Colors.white)),
               subtitle: const Text('Get daily reminders for your habit', style: TextStyle(color: Color(0xFF9E9E9E))),
-              activeColor: const Color(0xFF00D07E),
+              activeColor: const Color(0xFF8A2BE2),
               inactiveThumbColor: const Color(0xFF666666),
               inactiveTrackColor: const Color(0xFF333333),
             ),
@@ -777,7 +777,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
               border: Border.all(color: const Color(0xFF222222)),
             ),
             child: ListTile(
-              leading: const Icon(Icons.schedule, color: Color(0xFF00D07E)),
+              leading: const Icon(Icons.schedule, color: Color(0xFF8A2BE2)),
               title: const Text('Reminder Time', style: TextStyle(color: Colors.white)),
               subtitle: Text(_reminderTime.format(context), style: const TextStyle(color: Color(0xFF9E9E9E))),
               trailing: const Icon(Icons.chevron_right, color: Color(0xFF9E9E9E)),
@@ -792,7 +792,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                           backgroundColor: Color(0xFF111111),
                           hourMinuteTextColor: Colors.white,
                           dayPeriodTextColor: Colors.white,
-                          dialHandColor: Color(0xFF00D07E),
+                          dialHandColor: Color(0xFF8A2BE2),
                           dialTextColor: Colors.white,
                           dialBackgroundColor: Color(0xFF222222),
                         ),

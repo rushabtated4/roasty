@@ -160,11 +160,11 @@ class _EmojiCalendarState extends State<EmojiCalendar> {
           margin: const EdgeInsets.all(4),
           decoration: BoxDecoration(
             color: isCurrentMonth
-                ? (isToday ? const Color(0xFF00D07E).withOpacity(0.1) : const Color(0xFF222222))
+                ? (isToday ? const Color(0xFF8A2BE2).withOpacity(0.1) : const Color(0xFF222222))
                 : Colors.transparent,
             borderRadius: BorderRadius.circular(8),
             border: isToday
-                ? Border.all(color: const Color(0xFF00D07E), width: 2)
+                ? Border.all(color: const Color(0xFF8A2BE2), width: 2)
                 : null,
           ),
           child: Center(
