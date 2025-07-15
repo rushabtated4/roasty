@@ -6,6 +6,7 @@ import '../services/supabase_service.dart';
 import '../widgets/roast_loading_dialog.dart';
 import 'main_tracker_page.dart';
 import '../services/notification_service.dart';
+import 'package:superwallkit_flutter/superwallkit_flutter.dart';
 
 class OnboardingPage extends ConsumerStatefulWidget {
   const OnboardingPage({super.key});
@@ -262,14 +263,28 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                   children: [
                     if (_currentStep == 4) ...[
                       ElevatedButton(
-                        onPressed: _nextStep,
+                        onPressed: () {
+                          Superwall.shared.registerPlacement(
+                            'onboarding_generate_roosts',
+                            feature: () {
+                              _completeOnboarding();
+                            },
+                          );
+                        },
                         style: _whiteButtonStyle,
                         child: const Text('Save & Continue'),
                       ),
                       const SizedBox(height: 8),
                       Center(
                         child: TextButton(
-                          onPressed: _completeOnboarding,
+                          onPressed: () {
+                            Superwall.shared.registerPlacement(
+                              'onboarding_generate_roosts',
+                              feature: () {
+                                _completeOnboarding();
+                              },
+                            );
+                          },
                           style: TextButton.styleFrom(
                             foregroundColor: Colors.white,
                             textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, decoration: TextDecoration.underline),

@@ -34,8 +34,8 @@ void main() async {
   if (!kIsWeb) {
     try {
       String apiKey = Platform.isIOS 
-          ? "pk_dc7c5317be4ca9aba0e178d589a4de4908c95d91b13f002d" // iOS API key
-          : "pk_a211f2b34866ec62c468edc421c1342dda68acc90e07c496"; // Android API key
+          ? "pk_7c3222a4fffa973326834505292639eb4262080729a69b39" // iOS API key
+          : "pk_792cce176ceb2d0c17547bb2a270b580b06567513b574f05"; // Android API key
       Superwall.configure(apiKey);
     } catch (e) {
     }

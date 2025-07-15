@@ -417,37 +417,15 @@ class _MainTrackerPageState extends ConsumerState<MainTrackerPage> {
   }
 
   void _onMarkDonePressed() {
-    if (!kIsWeb && !_isPaidUser) {
-      // User is not paid, show Superwall paywall
-      try {
-        Superwall.shared.registerPlacement('mark_done_feature', feature: () {
-          _markHabitStatus('done');
-        });
-      } catch (e) {
-        // Fallback to direct action if Superwall fails
-        _markHabitStatus('done');
-      }
-    } else {
-      // User is paid or on web, proceed directly
+    Superwall.shared.registerPlacement('mark_done_feature', feature: () {
       _markHabitStatus('done');
-    }
+    });
   }
   
   void _onMarkMissedPressed() {
-    if (!kIsWeb && !_isPaidUser) {
-      // User is not paid, show Superwall paywall
-      try {
-        Superwall.shared.registerPlacement('mark_missed_feature', feature: () {
-          _markHabitStatus('missed');
-        });
-      } catch (e) {
-        // Fallback to direct action if Superwall fails
-        _markHabitStatus('missed');
-      }
-    } else {
-      // User is paid or on web, proceed directly
+    Superwall.shared.registerPlacement('mark_missed_feature', feature: () {
       _markHabitStatus('missed');
-    }
+    });
   }
 
   Widget _buildActionButtons() {
